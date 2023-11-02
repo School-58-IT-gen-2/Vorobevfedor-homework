@@ -7,13 +7,13 @@ def saving(arg): #сохранение файла
 		json.dump(arg, js)
 		js.close()
 
-def vivod(o): #вывод матрицы
+def output(matrix): #вывод матрицы
 	count = 1
 	print(end = '  ')
-	for x in range(1, len(o[0])+1):
-		print(x, end = ' ')
+	for i in range(1, len(matrix[0])+1):
+		print(i, end = ' ')
 	print()
-	for i in o:
+	for i in matrix:
 		print(count, end = ' ')
 		count += 1
 		print(*i, ' ')
@@ -33,92 +33,93 @@ if answ == 'new': #создание матрицы и установка бом�
 			print('Ошибка в размерах поля!')
 			continue
 		break; 
-	o = []
+	matrix = []
 	for i in range(x): #генерация "скрытой" матрицы 
-		o.append([0]*y)
-	r = []
+		matrix.append([0]*y)
+	matrusr = []
 	for j in range(x): #генерация матрицы пользователя
-		r.append(['*']*y)
+		matrusr.append(['*']*y)
 	while True: #предохранитель от ошибок в количестве бомб
-		try: q = int(input('введите кол-во бомб >>> '))
+		try: bomb = int(input('введите кол-во бомб >>> '))
 		except: 
 			print('Ошибка в кол-ве бомб (не число)!')
-			continue
-		if q > 0 and q < (x*y):
-			break;
-	for i in range(q): #
-		k = random.randint(0, x-1)
-		l = random.randint(0,y-1)
-		o[k][l] = 'B'
-		if k != 0 and o[k-1][l] != 'B': o[k-1][l] += 1
-		if k != x-1 and o[k+1][l] != 'B': o[k+1][l] += 1
-		if l != 0 and o[k][l-1] != 'B': o[k][l-1] += 1
-		if l != y-1 and o[k][l+1] != 'B': o[k][l+1] += 1
-		if k != 0 and l != 0 and o[k-1][l-1] != 'B': o[k-1][l-1] += 1
-		if k != x-1 and l != y-1 and o[k+1][l+1] != 'B': o[k+1][l+1] += 1
-		if l != 0 and k != x-1 and o[k+1][l-1] != 'B': o[k+1][l-1] += 1
-		if l != y-1 and k != 0 and o[k-1][l+1] != 'B': o[k-1][l+1] += 1
+			continue; 
+		if bomb > 0 and bomb < (x*y):
+			break;  
+	for i in range(bomb): #
+		rand1 = random.randint(0, x-1)
+		rand2 = random.randint(0,y-1)
+		matrix[rand1][rand2] = 'B'
+		if rand1 != 0 and matrix[rand1-1][rand2] != 'B': matrix[rand1-1][rand2] += 1
+		if rand1 != x-1 and matrix[rand1+1][rand2] != 'B': matrix[rand1+1][rand2] += 1
+		if rand2 != 0 and matrix[rand1][rand2-1] != 'B': matrix[rand1][rand2-1] += 1
+		if rand2 != y-1 and matrix[rand1][rand2+1] != 'B': matrix[rand1][rand2+1] += 1
+		if rand1 != 0 and rand2 != 0 and matrix[rand1-1][rand2-1] != 'B': matrix[rand1-1][rand2-1] += 1
+		if rand1 != x-1 and rand2 != y-1 and matrix[rand1+1][rand2+1] != 'B': matrix[rand1+1][rand2+1] += 1
+		if rand2 != 0 and rand1 != x-1 and matrix[rand1+1][rand2-1] != 'B': matrix[rand1+1][rand2-1] += 1
+		if rand2 != y-1 and rand1 != 0 and matrix[rand1-1][rand2+1] != 'B': matrix[rand1-1][rand2+1] += 1
 
 elif answ == "load": #загрузка сохранённой матрицы
 	f = open('save.json', 'r')
 	data = json.load(f)
-	o = data['matrix']
-	r = data['usermatrix']
+	matrix = data['matrix']
+	matrusr = data['usermatrix']
 	x = data['height']
 	y = data['width']
-	q = data['bombs']
+	bomb = data['bombs']
 	print('Загружено!')
 	f.close()
 
 while True: #цикл игры
 	clear()
-	vivod(r)
-	try: m, n = map(int, input('Введите координаты (например 2 3) >>> ').split(' ')) #текущие координаты пользователя
+	output(matrusr)
+	try: x1, y1 = map(int, input('Введите координаты (например 2 3) >>> ').split(' ')) #текущие координаты пользователя
 	except: continue; 
-	if n > x or m > y or n <= 0 or m <= 0: continue; #неправильные координаты
-	m -= 1
-	n -= 1
-	if r[m][n] != '*' and r[m][n] != 'P': continue; #неповторение открытия клетки
+	if y1 > x or x1 > y or y1 <= 0 or x1 <= 0: continue; #неправильные координаты
+	x1 -= 1
+	y1 -= 1
+	if matrusr[x1][y1] != '*' and matrusr[x1][y1] != 'P': continue; #неповторение открытия клетки
 	try: answ = int(input('Кнопка действия: 0 - открыть клетку или убрать флажок, \n1 - поставить флажок, 2 - сохранить и 3 - выйти. >>> ')) #действие пользователя
 	except: continue; 
 	if answ == 0: #ничего не делать/удалить флажок
-		if r[m][n] == 'P':
-			r[m][n] = '*'
-			if o[m][n] == 'R':
-				o[m][n] = 'B'
+		if matrusr[x1][y1] == 'P':
+			matrusr[x1][y1] = '*'
+			if matrix[x1][y1] == 'R':
+				matrix[x1][y1] = 'B'
 			continue; 
-		else: r[m][n] = o[m][n] #"открытие" текущей клетки
+		else: matrusr[x1][y1] = matrix[x1][y1] #"открытие" текущей клетки
 	if answ  == 1: #поставить флажок
-		r[m][n] = 'P'
-		if o[m][n] == 'B': #
-			o[m][n] = 'R'
+		matrusr[x1][y1] = 'P'
+		if matrix[x1][y1] == 'B': #
+			matrix[x1][y1] = 'R'
 		coun1 = 0
 		coun2 = 0
 		for i in range(x): #поиск количества флажков и флажков с бомбами
 			for j in range(y):
-				if r[i][j] == 'P':
+				if matrusr[i][j] == 'P':
 					coun1 += 1
-				if o[i][j] == 'R':
+				if matrix[i][j] == 'R':
 					coun2 += 1
-		if coun1 == coun2 and coun1 == q: #проверка на выигрыш
+		if coun1 == coun2 and coun1 == bomb: #проверка на выигрыш
 			clear()
-			vivod(r)
+			output(matrusr)
 			print('Вы выиграли! Поздравляем!')
 			break; 
 		continue; 
 	elif answ == 2: #сохранение текущей игры
 		dic = {
-			'matrix':o,
-			'usermatrix':r,
+			'matrix':matrix,
+			'usermatrix':matrusr,
 			'height':x,
 			'width':y,
-			'bombs':q
+			'bombs':bomb
 			}
 		saving(dic)
 		print('Сохранено!')
+		continue; 
 	elif answ == 3: #завершение игры
-		break;
-	if o[m][n] == 'B': #проигрыш
-		vivod(o) #вывод скрытого поля
+		break; 
+	if matrix[x1][y1] == 'B': #проигрыш
+		output(matrix) #вывод скрытого поля
 		print('Вы проиграли!')
 		break; 
