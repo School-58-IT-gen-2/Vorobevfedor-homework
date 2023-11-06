@@ -46,10 +46,18 @@ if answ == 'new': #создание матрицы и установка бом�
 			continue; 
 		if bomb > 0 and bomb < (x*y):
 			break;  
+	testarray = []
 	for i in range(bomb): #
 		rand1 = random.randint(0, x-1)
 		rand2 = random.randint(0,y-1)
-		matrix[rand1][rand2] = 'B'
+		while True:
+			if [rand1, rand2] not in testarray:
+				matrix[rand1][rand2] = 'B'
+				testarray.append([rand1, rand2])
+				break;
+			else:
+				rand1 = random.randint(0, x-1)
+				rand2 = random.randint(0,y-1)
 		if rand1 != 0 and matrix[rand1-1][rand2] != 'B': matrix[rand1-1][rand2] += 1
 		if rand1 != x-1 and matrix[rand1+1][rand2] != 'B': matrix[rand1+1][rand2] += 1
 		if rand2 != 0 and matrix[rand1][rand2-1] != 'B': matrix[rand1][rand2-1] += 1
