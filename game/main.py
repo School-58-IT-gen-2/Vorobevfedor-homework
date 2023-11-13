@@ -28,11 +28,12 @@ def clear(): #очистка экрана
 answ = input('Привет! Вы зашли в игру "Сапёр"! Для того чтобы начать новую игру - напишите "new"\nДля того чтобы загрузить сохранение - напишите "load" >>> ')
 if answ == 'new': #создание матрицы и установка бомб
 	while True: #предохранитель от ошибок в размере поля
-		try: x,y = map(int, input('Введите размеры поля (например 6 50) >>> ').split(' '))
+		try: 
+			x,y = map(int, input('Введите размеры поля (например 6 50) >>> ').split(' '))
 		except: 
 			print('Ошибка в размерах поля!')
 			continue
-		break; 
+		break
 	matrix = []
 	for i in range(x): #генерация "скрытой" матрицы 
 		matrix.append([0]*y)
@@ -40,12 +41,13 @@ if answ == 'new': #создание матрицы и установка бом�
 	for j in range(x): #генерация матрицы пользователя
 		matrusr.append(['*']*y)
 	while True: #предохранитель от ошибок в количестве бомб
-		try: bomb = int(input('введите кол-во бомб >>> '))
+		try: 
+			bomb = int(input('введите кол-во бомб >>> '))
 		except: 
 			print('Ошибка в кол-ве бомб (не число)!')
-			continue; 
+			continue
 		if bomb > 0 and bomb < (x*y):
-			break;  
+			break
 	testarray = []
 	for i in range(bomb): #
 		rand1 = random.randint(0, x-1)
@@ -54,18 +56,26 @@ if answ == 'new': #создание матрицы и установка бом�
 			if [rand1, rand2] not in testarray:
 				matrix[rand1][rand2] = 'B'
 				testarray.append([rand1, rand2])
-				break;
+				break 
 			else:
 				rand1 = random.randint(0, x-1)
 				rand2 = random.randint(0,y-1)
-		if rand1 != 0 and matrix[rand1-1][rand2] != 'B': matrix[rand1-1][rand2] += 1
-		if rand1 != x-1 and matrix[rand1+1][rand2] != 'B': matrix[rand1+1][rand2] += 1
-		if rand2 != 0 and matrix[rand1][rand2-1] != 'B': matrix[rand1][rand2-1] += 1
-		if rand2 != y-1 and matrix[rand1][rand2+1] != 'B': matrix[rand1][rand2+1] += 1
-		if rand1 != 0 and rand2 != 0 and matrix[rand1-1][rand2-1] != 'B': matrix[rand1-1][rand2-1] += 1
-		if rand1 != x-1 and rand2 != y-1 and matrix[rand1+1][rand2+1] != 'B': matrix[rand1+1][rand2+1] += 1
-		if rand2 != 0 and rand1 != x-1 and matrix[rand1+1][rand2-1] != 'B': matrix[rand1+1][rand2-1] += 1
-		if rand2 != y-1 and rand1 != 0 and matrix[rand1-1][rand2+1] != 'B': matrix[rand1-1][rand2+1] += 1
+		if rand1 != 0 and matrix[rand1-1][rand2] != 'B': 
+			matrix[rand1-1][rand2] += 1
+		if rand1 != x-1 and matrix[rand1+1][rand2] != 'B': 
+			matrix[rand1+1][rand2] += 1
+		if rand2 != 0 and matrix[rand1][rand2-1] != 'B': 
+			matrix[rand1][rand2-1] += 1
+		if rand2 != y-1 and matrix[rand1][rand2+1] != 'B': 
+			matrix[rand1][rand2+1] += 1
+		if rand1 != 0 and rand2 != 0 and matrix[rand1-1][rand2-1] != 'B': 
+			matrix[rand1-1][rand2-1] += 1
+		if rand1 != x-1 and rand2 != y-1 and matrix[rand1+1][rand2+1] != 'B': 
+			matrix[rand1+1][rand2+1] += 1
+		if rand2 != 0 and rand1 != x-1 and matrix[rand1+1][rand2-1] != 'B': 
+			matrix[rand1+1][rand2-1] += 1
+		if rand2 != y-1 and rand1 != 0 and matrix[rand1-1][rand2+1] != 'B': 
+			matrix[rand1-1][rand2+1] += 1
 
 elif answ == "load": #загрузка сохранённой матрицы
 	f = open('save.json', 'r')
@@ -78,23 +88,29 @@ elif answ == "load": #загрузка сохранённой матрицы
 	print('Загружено!')
 	f.close()
 
-while True: #цикл игры
+while True:  #цикл игры
 	clear()
 	output(matrusr)
-	try: x1, y1 = map(int, input('Введите координаты (например 2 3) >>> ').split(' ')) #текущие координаты пользователя
-	except: continue; 
-	if y1 > x or x1 > y or y1 <= 0 or x1 <= 0: continue; #неправильные координаты
+	try: 
+		x1, y1 = map(int, input('Введите координаты (например 2 3) >>> ').split(' '))  #текущие координаты пользователя
+	except: 
+		continue
+	if y1 > x or x1 > y or y1 <= 0 or x1 <= 0:  #неправильные координаты
+		continue 
 	x1 -= 1
 	y1 -= 1
-	if matrusr[x1][y1] != '*' and matrusr[x1][y1] != 'P': continue; #неповторение открытия клетки
-	try: answ = int(input('Кнопка действия: 0 - открыть клетку или убрать флажок, \n1 - поставить флажок, 2 - сохранить и 3 - выйти. >>> ')) #действие пользователя
-	except: continue; 
+	if matrusr[x1][y1] != '*' and matrusr[x1][y1] != 'P':  #неповторение открытия клетки
+		continue 
+	try: 
+		answ = int(input('Кнопка действия: 0 - открыть клетку или убрать флажок, \n1 - поставить флажок, 2 - сохранить и 3 - выйти. >>> ')) #действие пользователя
+	except: 
+		continue
 	if answ == 0: #ничего не делать/удалить флажок
 		if matrusr[x1][y1] == 'P':
 			matrusr[x1][y1] = '*'
 			if matrix[x1][y1] == 'R':
 				matrix[x1][y1] = 'B'
-			continue; 
+			continue
 		else: matrusr[x1][y1] = matrix[x1][y1] #"открытие" текущей клетки
 	if answ  == 1: #поставить флажок
 		matrusr[x1][y1] = 'P'
@@ -112,8 +128,8 @@ while True: #цикл игры
 			clear()
 			output(matrusr)
 			print('Вы выиграли! Поздравляем!')
-			break; 
-		continue; 
+			break
+		continue
 	elif answ == 2: #сохранение текущей игры
 		dic = {
 			'matrix':matrix,
@@ -124,10 +140,10 @@ while True: #цикл игры
 			}
 		saving(dic)
 		print('Сохранено!')
-		continue; 
+		continue
 	elif answ == 3: #завершение игры
 		break; 
 	if matrix[x1][y1] == 'B': #проигрыш
 		output(matrix) #вывод скрытого поля
 		print('Вы проиграли!')
-		break; 
+		break
